@@ -1,5 +1,7 @@
 LvLKUI = LvLKUI or {}
 
+LvLKUI.GLOBAL_DRAGGING_FRAME = false
+
 LvLKUI.DeclareComponent("frame", {
 	["MOUSE_HOVER_EXTERNAL"] = true,
 	["MOUSE_CLICK_EXTERNAL"] = false,
@@ -15,24 +17,30 @@ LvLKUI.DeclareComponent("frame", {
 
 	-- what to do when we're initialized
 	["onInit"] = function(elm)
+		elm.children = {}
+
+		local elmSize = elm.size
+
 		local bClose = LvLKUI.NewElement("bClose_Frame", "button")
 		LvLKUI.SetPriority(bClose, 30)
-		LvLKUI.SetPos(bClose, {0, 0})
+		LvLKUI.SetPos(bClose, {elmSize[1] - 16, 0})
 		LvLKUI.SetSize(bClose, {16, 16})
 		LvLKUI.SetLabel(bClose, "X")
 		LvLKUI.SetOnClick(bClose, function()
 			LvLKUI.RemoveElement(elm.name)
 		end)
-
+		LvLKUI.SetColourOverride(bClose, elm.colOverridePrimary, elm.colOverrideSecondary, {1, 0.25, 0.25})
 		LvLKUI.PushElement(bClose, elm)
 
 		local bMinimize = LvLKUI.NewElement("bMinimize_Frame", "button")
 		LvLKUI.SetPriority(bMinimize, 30)
-		LvLKUI.SetPos(bMinimize, {0, 0})
+		LvLKUI.SetPos(bMinimize, {elmSize[1] - 16 - 20, 0})
 		LvLKUI.SetSize(bMinimize, {16, 16})
 		LvLKUI.SetLabel(bMinimize, "-")
-		LvLKUI.SetOnClick(bMinimize, function()
+		LvLKUI.SetColourOverride(bMinimize, elm.colOverridePrimary, elm.colOverrideSecondary, {0.9, 0.9, 1})
 
+
+		LvLKUI.SetOnClick(bMinimize, function()
 			local _blacklistNames = {
 				["bClose_Frame"] = true,
 				["bMinimize_Frame"] = true
@@ -84,6 +92,8 @@ LvLKUI.DeclareComponent("frame", {
 
 		local bMinimize = LvLKUI.GetElement("bMinimize_Frame", elm)
 		LvLKUI.SetPos(bMinimize, {elmSize[1] - 16 - 20, 0})
+
+		LvLKUI.SetColourOverride(bClose, elm.colOverridePrimary, elm.colOverrideSecondary, {1, 0.25, 0.25})
 	end,
 
 	-- what to do each tick?
@@ -96,9 +106,11 @@ LvLKUI.DeclareComponent("frame", {
 
 	-- what to do when hovering?
 	["onHover"] = function(elm, mx, my, hit)
-		--if not hit then
-		--	return
-		--end
+		-- wow more terrible hacks
+		if LvLKUI.GLOBAL_DRAGGING_FRAME and LvLKUI.GLOBAL_DRAGGING_FRAME ~= elm then
+			return
+		end
+
 
 		if not elm._isDragging then
 			if not hit then
@@ -117,9 +129,12 @@ LvLKUI.DeclareComponent("frame", {
 
 			elm._isDragging = true
 			elm._relativePickup = {mx, my}
+
+			LvLKUI.GLOBAL_DRAGGING_FRAME = elm
 		else
 			if not love.mouse.isDown(1) then
 				elm._isDragging = false
+				LvLKUI.GLOBAL_DRAGGING_FRAME = nil
 				return
 			end
 
@@ -153,7 +168,7 @@ LvLKUI.DeclareComponent("frame", {
 
 
 		love.graphics.setColor(colHighlight[1], colHighlight[2], colHighlight[3])
-		love.graphics.draw(elm._textLabelObj, 0, 0)
+		love.graphics.draw(elm._textLabelObj, 4, 0)
 	end,
 
 	-- what to do when we're removed?

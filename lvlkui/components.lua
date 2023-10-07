@@ -22,6 +22,11 @@ local baseParameteri = {
 
 	["_childCount"] = 0,
 	["_sortedChildren"] = {},
+
+	["doColourOverride"] = false,
+	["colOverridePrimary"] = {0.3, 0.3, 0.4},
+	["colOverrideSecondary"] = {0.1, 0.1, 0.125},
+	["colOverrideHighlight"] = {0.95, 0.95, 1},
 }
 
 local function copyTable(tbl)

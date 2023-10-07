@@ -33,6 +33,32 @@ function love.load()
 	LvLKUI.PushElement(button_base2)
 
 
+	local frame_main2 = LvLKUI.NewElement("frame_main2", "frame")
+	LvLKUI.SetPriority(frame_main2, 20)
+	LvLKUI.SetPos(frame_main2, {256, 256})
+	LvLKUI.SetSize(frame_main2, {256, 256})
+	LvLKUI.SetLabel(frame_main2, "The other frame")
+	LvLKUI.SetColourOverride(frame_main2, {0.3, 0.4, 0.3}, {0.1, 0.125, 0.1}, {0.95, 1, 0.95})
+	LvLKUI.ReInit(frame_main2)
+
+
+	local button_test_child2 = LvLKUI.NewElement("button_test_child2", "button")
+	LvLKUI.SetPriority(button_test_child2, 40)
+	LvLKUI.SetPos(button_test_child2, {128 - (240 * .5), 128 - 16})
+	LvLKUI.SetSize(button_test_child2, {240, 32})
+	LvLKUI.SetLabel(button_test_child2, "Wow this one is another colour!")
+	LvLKUI.SetOnClick(button_test_child2, function(elm, mx, my)
+		print("hello")
+	end)
+
+	LvLKUI.SetColourOverride(button_test_child2, {0.4, 0.3, 0.3}, {0.125, 0.1, 0.1}, {1, 0.5, 0.5})
+
+	LvLKUI.PushElement(button_test_child2, frame_main2)
+	LvLKUI.PushElement(frame_main2)
+
+
+
+
 	--[[
 	local panel_test2 = LvLKUI.NewElement("panel_test2", "panel")
 	LvLKUI.SetPriority(panel_test2, 40)
