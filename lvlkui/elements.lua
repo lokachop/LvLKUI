@@ -69,6 +69,15 @@ function LvLKUI.NewElement(name, component)
 	elm.name = name
 	elm.component = component
 
+	local theme = LvLKUI.Themes[elm.theme]
+	if not theme then
+		error("Non-existant \"" .. elm.theme .. "\", FATAL!")
+	end
+
+	elm.colOverridePrimary = theme.primary
+	elm.colOverrideSecondary = theme.secondary
+	elm.colOverrideHighlight = theme.highlight
+
 	elm.onInit(elm)
 	return elm
 end

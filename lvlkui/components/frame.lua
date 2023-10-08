@@ -14,6 +14,7 @@ LvLKUI.DeclareComponent("frame", {
 	["_childrenStash"] = {},
 	["_isMinimized"] = false,
 	["_formerSize"] = {0, 0},
+	["closeDisabled"] = false,
 
 	-- what to do when we're initialized
 	["onInit"] = function(elm)
@@ -22,25 +23,28 @@ LvLKUI.DeclareComponent("frame", {
 		local elmSize = elm.size
 
 		local bClose = LvLKUI.NewElement("bClose_Frame", "button")
-		LvLKUI.SetPriority(bClose, 30)
-		LvLKUI.SetPos(bClose, {elmSize[1] - 16, 0})
-		LvLKUI.SetSize(bClose, {16, 16})
-		LvLKUI.SetLabel(bClose, "X")
-		LvLKUI.SetOnClick(bClose, function()
-			LvLKUI.RemoveElement(elm.name)
+		bClose:SetPriority(30)
+		bClose:SetPos({elmSize[1] - 16, 0})
+		bClose:SetSize({16, 16})
+		bClose:SetLabel("X")
+		bClose:SetOnClick(function()
+			if elm.closeDisabled then
+				return
+			end
+			elm:Remove()
 		end)
-		LvLKUI.SetColourOverride(bClose, elm.colOverridePrimary, elm.colOverrideSecondary, {1, 0.25, 0.25})
+		bClose:SetColourOverride(elm.colOverridePrimary, elm.colOverrideSecondary, {1, 0.25, 0.25})
 		LvLKUI.PushElement(bClose, elm)
 
 		local bMinimize = LvLKUI.NewElement("bMinimize_Frame", "button")
-		LvLKUI.SetPriority(bMinimize, 30)
-		LvLKUI.SetPos(bMinimize, {elmSize[1] - 16 - 20, 0})
-		LvLKUI.SetSize(bMinimize, {16, 16})
-		LvLKUI.SetLabel(bMinimize, "-")
-		LvLKUI.SetColourOverride(bMinimize, elm.colOverridePrimary, elm.colOverrideSecondary, {0.9, 0.9, 1})
+		bMinimize:SetPriority(30)
+		bMinimize:SetPos({elmSize[1] - 16 - 20, 0})
+		bMinimize:SetSize({16, 16})
+		bMinimize:SetLabel("-")
+		bMinimize:SetColourOverride(elm.colOverridePrimary, elm.colOverrideSecondary, {0.9, 0.9, 1})
 
 
-		LvLKUI.SetOnClick(bMinimize, function()
+		bMinimize:SetOnClick(function()
 			local _blacklistNames = {
 				["bClose_Frame"] = true,
 				["bMinimize_Frame"] = true
@@ -78,7 +82,6 @@ LvLKUI.DeclareComponent("frame", {
 
 		LvLKUI.PushElement(bMinimize, elm)
 
-
 		-- setup the label, same as button
 		local theme = LvLKUI.Themes[elm.theme]
 		elm._textLabelObj = love.graphics.newText(theme._fontObj, elm.label)
@@ -87,13 +90,11 @@ LvLKUI.DeclareComponent("frame", {
 	["onSizeChange"] = function(elm)
 		local elmSize = elm.size
 
-		local bClose = LvLKUI.GetElement("bClose_Frame", elm)
-		LvLKUI.SetPos(bClose, {elmSize[1] - 16, 0})
+		local bClose = elm:GetChild("bClose_Frame")
+		bClose:SetPos({elmSize[1] - 16, 0})
 
-		local bMinimize = LvLKUI.GetElement("bMinimize_Frame", elm)
-		LvLKUI.SetPos(bMinimize, {elmSize[1] - 16 - 20, 0})
-
-		LvLKUI.SetColourOverride(bClose, elm.colOverridePrimary, elm.colOverrideSecondary, {1, 0.25, 0.25})
+		local bMinimize = elm:GetChild("bMinimize_Frame")
+		bMinimize:SetPos({elmSize[1] - 16 - 20, 0})
 	end,
 
 	-- what to do each tick?
@@ -141,7 +142,7 @@ LvLKUI.DeclareComponent("frame", {
 
 			local rmx, rmy = love.mouse.getPosition()
 			local rela = elm._relativePickup
-			LvLKUI.SetPos(elm, {-rela[1] + rmx, -rela[2] + rmy})
+			elm:SetPos({-rela[1] + rmx, -rela[2] + rmy})
 		end
 	end,
 

@@ -8,9 +8,9 @@ end
 LvLKUI.LoadFile("utils")
 
 LvLKUI.LoadFile("themes")
+LvLKUI.LoadFile("methods")
 LvLKUI.LoadFile("components")
 LvLKUI.LoadFile("elements")
-LvLKUI.LoadFile("methods")
 LvLKUI.LoadFile("input")
 
 LvLKUI.LoadFile("rendering")

@@ -4,54 +4,69 @@ function love.load()
 
 
 	local frame_main = LvLKUI.NewElement("frame_main", "frame")
-	LvLKUI.SetPriority(frame_main, 20)
-	LvLKUI.SetPos(frame_main, {32, 32})
-	LvLKUI.SetSize(frame_main, {256, 256})
+	frame_main:SetPriority(20)
+	frame_main:SetPos({32, 32})
+	frame_main:SetSize({256, 256})
 
 	local button_test_child = LvLKUI.NewElement("button_test_child", "button")
-	LvLKUI.SetPriority(button_test_child, 40)
-	LvLKUI.SetPos(button_test_child, {128 - 64, 128 - 16})
-	LvLKUI.SetSize(button_test_child, {128, 32})
-	LvLKUI.SetLabel(button_test_child, "Print shit")
-	LvLKUI.SetOnClick(button_test_child, function(elm, mx, my)
+	button_test_child:SetPriority(40)
+	button_test_child:SetPos({128 - 64, 128 - 16})
+	button_test_child:SetSize({128, 32})
+	button_test_child:SetLabel("Print shit")
+	button_test_child:SetOnClick(function(elm, mx, my)
 		print("you pressed This!")
 	end)
-
 	LvLKUI.PushElement(button_test_child, frame_main)
+
+	local label_test_child = LvLKUI.NewElement("label_test_child", "label")
+	label_test_child:SetPriority(30)
+	label_test_child:SetPos({128, 180})
+	label_test_child:SetSize({128, 32})
+	label_test_child:SetLabel("Hellooo!")
+	LvLKUI.PushElement(button_test_child, frame_main)
+
+
 	LvLKUI.PushElement(frame_main)
 
 
+
+
+
 	local button_base2 = LvLKUI.NewElement("button_base2", "button")
-	LvLKUI.SetPriority(button_base2, 10)
-	LvLKUI.SetPos(button_base2, {256, 256})
-	LvLKUI.SetSize(button_base2, {512, 64})
-	LvLKUI.SetLabel(button_base2, "Another button for some reason")
-	LvLKUI.SetOnClick(button_base2, function(elm, mx, my)
+	button_base2:SetPriority(10)
+	button_base2:SetPos({256, 256})
+	button_base2:SetSize({512, 64})
+	button_base2:SetLabel("Another button for some reason")
+	button_base2:SetOnClick(function(elm, mx, my)
 		print("you pressed this too!")
 	end)
 
 	LvLKUI.PushElement(button_base2)
 
 
+
+
+
+
 	local frame_main2 = LvLKUI.NewElement("frame_main2", "frame")
-	LvLKUI.SetPriority(frame_main2, 20)
-	LvLKUI.SetPos(frame_main2, {256, 256})
-	LvLKUI.SetSize(frame_main2, {256, 256})
-	LvLKUI.SetLabel(frame_main2, "The other frame")
-	LvLKUI.SetColourOverride(frame_main2, {0.3, 0.4, 0.3}, {0.1, 0.125, 0.1}, {0.95, 1, 0.95})
-	LvLKUI.ReInit(frame_main2)
+	frame_main2:SetPriority(20)
+	frame_main2:SetPos({256, 256})
+	frame_main2:SetSize({256, 256})
+	frame_main2:SetLabel("The other frame")
+	frame_main2:SetColourOverride({0.3, 0.4, 0.3}, {0.1, 0.125, 0.1}, {0.95, 1, 0.95})
+	frame_main2:ReInit()
 
 
 	local button_test_child2 = LvLKUI.NewElement("button_test_child2", "button")
-	LvLKUI.SetPriority(button_test_child2, 40)
-	LvLKUI.SetPos(button_test_child2, {128 - (240 * .5), 128 - 16})
-	LvLKUI.SetSize(button_test_child2, {240, 32})
-	LvLKUI.SetLabel(button_test_child2, "Wow this one is another colour!")
-	LvLKUI.SetOnClick(button_test_child2, function(elm, mx, my)
+	button_test_child2:SetPriority(40)
+	button_test_child2:SetPos({128 - (240 * .5), 128 - 16})
+	button_test_child2:SetSize({240, 32})
+	button_test_child2:SetLabel("Wow this one is another colour!")
+	button_test_child2:SetOnClick(function(elm, mx, my)
 		print("hello")
 	end)
 
-	LvLKUI.SetColourOverride(button_test_child2, {0.4, 0.3, 0.3}, {0.125, 0.1, 0.1}, {1, 0.5, 0.5})
+	button_test_child2:SetColourOverride({0.4, 0.3, 0.3}, {0.125, 0.1, 0.1}, {1, 0.5, 0.5})
 
 	LvLKUI.PushElement(button_test_child2, frame_main2)
 	LvLKUI.PushElement(frame_main2)

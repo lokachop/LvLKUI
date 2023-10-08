@@ -12,11 +12,12 @@ local function renderElement(elm)
 			local primary = theme.primary
 			local secondary = theme.secondary
 			local highlight = theme.highlight
-			if elm.doColourOverride then
+			if elm.doColourOverride == true then
 				primary = elm.colOverridePrimary
 				secondary = elm.colOverrideSecondary
 				highlight = elm.colOverrideHighlight
 			end
+
 			elm.onPaint(elm, size[1], size[2], primary, secondary, highlight, theme._fontObj)
 
 

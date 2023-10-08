@@ -14,7 +14,6 @@ function LvLKUI.NewTheme(name, data)
     print("LvLKUI: New theme! \"" .. name .. "\"")
 end
 
-
 LvLKUI.NewTheme("base", {
     ["primary"] = {0.3, 0.3, 0.4},
     ["secondary"] = {0.1, 0.1, 0.125},

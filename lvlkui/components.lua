@@ -29,6 +29,7 @@ local baseParameteri = {
 	["colOverrideHighlight"] = {0.95, 0.95, 1},
 }
 
+
 local function copyTable(tbl)
 	local new = {}
 
@@ -57,7 +58,13 @@ function LvLKUI.DeclareComponent(name, data)
 	LvLKUI.Components[name] = {}
 	local ptr = LvLKUI.Components[name]
 
+	-- move in the base parameteri
 	for k, v in pairs(baseParameteri) do
+		ptr[k] = copy(v)
+	end
+
+	-- copy the base methods aswell
+	for k, v in pairs(LvLKUI.BaseMethods) do
 		ptr[k] = copy(v)
 	end
 
@@ -80,6 +87,7 @@ end
 
 LvLKUI.LoadFile("components.panel")
 LvLKUI.LoadFile("components.button")
+LvLKUI.LoadFile("components.label")
 
 LvLKUI.LoadFile("components.frame")
 
