@@ -1,5 +1,6 @@
 function love.load()
 	love.filesystem.load("/lvlkui/lvlkui.lua")()
+	love.keyboard.setKeyRepeat(true)
 	CurTime = 0
 
 
@@ -23,7 +24,15 @@ function love.load()
 	label_test_child:SetPos({128, 180})
 	label_test_child:SetSize({128, 32})
 	label_test_child:SetLabel("Hellooo!")
-	LvLKUI.PushElement(button_test_child, frame_main)
+	label_test_child:SetAlignMode({1, 1})
+	LvLKUI.PushElement(label_test_child, frame_main)
+
+	local entry_test_child = LvLKUI.NewElement("entry_test_child", "textentry")
+	entry_test_child:SetPriority(30)
+	entry_test_child:SetPos({128 - 64, 232 - 12})
+	entry_test_child:SetSize({128, 24})
+	--entry_test_child:SetLabel("Hellooo!")
+	LvLKUI.PushElement(entry_test_child, frame_main)
 
 
 	LvLKUI.PushElement(frame_main)
@@ -54,6 +63,7 @@ function love.load()
 	frame_main2:SetSize({256, 256})
 	frame_main2:SetLabel("The other frame")
 	frame_main2:SetColourOverride({0.3, 0.4, 0.3}, {0.1, 0.125, 0.1}, {0.95, 1, 0.95})
+	frame_main2:SetCloseDisabled(true)
 	frame_main2:ReInit()
 
 
@@ -96,7 +106,12 @@ function love.update(dt)
 	LvLKUI.TriggerThink(dt)
 end
 
+function love.textinput(key)
+	LvLKUI.TriggerKeypress(key, false)
+end
+
 function love.keypressed(key)
+	LvLKUI.TriggerKeypress(key, true)
 end
 
 function love.mousepressed(x, y, button)

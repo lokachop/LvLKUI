@@ -17,8 +17,10 @@ LvLKUI.DeclareComponent("label", {
 
 	-- what to do when the label changes
 	["onLabelChange"] = function(elm)
+		elm._textLabelObj:set(elm.label)
+
 		local theme = LvLKUI.Themes[elm.theme]
-		elm._textLabelObj = love.graphics.newText(theme._fontObj, elm.label)
+		elm._textLabelObj:setFont(theme._fontObj)
 	end,
 
 	-- what to do when clicked?
@@ -40,10 +42,19 @@ LvLKUI.DeclareComponent("label", {
 
 
 		love.graphics.setColor(colHighlight[1], colHighlight[2], colHighlight[3])
-		love.graphics.draw(elm._textLabelObj, 0 - (textWide * alnXMul), 0 - (textTall * alnYMul))
+		love.graphics.draw(elm._textLabelObj, -textWide * alnXMul, -textTall * alnYMul)
 	end,
 
 	-- what to do when we're removed?
 	["onRemove"] = function()
+	end,
+
+
+	["SetAlignMode"] = function(elm, alignmode)
+		if not alignmode then
+			return
+		end
+
+		elm.alignMode = alignmode
 	end,
 })

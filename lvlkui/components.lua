@@ -90,6 +90,7 @@ LvLKUI.LoadFile("components.button")
 LvLKUI.LoadFile("components.label")
 
 LvLKUI.LoadFile("components.frame")
+LvLKUI.LoadFile("components.textentry")
 
 LvLKUI.LoadFile("components.testpanel")
 LvLKUI.LoadFile("components.mousetest")

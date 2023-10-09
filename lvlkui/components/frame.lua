@@ -14,7 +14,14 @@ LvLKUI.DeclareComponent("frame", {
 	["_childrenStash"] = {},
 	["_isMinimized"] = false,
 	["_formerSize"] = {0, 0},
+
 	["closeDisabled"] = false,
+
+	["SetCloseDisabled"] = function(elm, disable)
+		print(elm.closeDisabled)
+		elm.closeDisabled = disable or false
+		print(elm.closeDisabled)
+	end,
 
 	-- what to do when we're initialized
 	["onInit"] = function(elm)
@@ -31,9 +38,35 @@ LvLKUI.DeclareComponent("frame", {
 			if elm.closeDisabled then
 				return
 			end
+
 			elm:Remove()
 		end)
 		bClose:SetColourOverride(elm.colOverridePrimary, elm.colOverrideSecondary, {1, 0.25, 0.25})
+		bClose:SetOnPaint(function(elm2, w, h, colPrimary, colSecondary, colHighlight, font)
+			local _add = 0
+			if not elm.closeDisabled then
+				--print(elm.closeDisabled)
+				local _addHover = elm2._isHovered and 0.1 or 0.0
+				local _addMouse = (elm2._isHovered and love.mouse.isDown(1)) and 0.2 or 0
+				_add = _addHover + _addMouse
+			end
+
+			love.graphics.setColor(colSecondary[1] + _add, colSecondary[2] + _add, colSecondary[3] + _add)
+			love.graphics.rectangle("fill", 0, 0, w, h)
+
+			love.graphics.setColor(colPrimary[1] + _add, colPrimary[2] + _add, colPrimary[3] + _add)
+			love.graphics.setLineWidth(2)
+			love.graphics.rectangle("line", 0, 0, w, h)
+
+			-- align to center
+			local textWide, textTall = elm2._textLabelObj:getDimensions()
+
+			local mulDisabled = elm.closeDisabled and .25 or 1
+
+			love.graphics.setColor(colHighlight[1] * mulDisabled, colHighlight[2], colHighlight[3])
+			love.graphics.draw(elm2._textLabelObj, (w * .5) - (textWide * .5), (h * .5) - (textTall * .5))
+		end)
+
 		LvLKUI.PushElement(bClose, elm)
 
 		local bMinimize = LvLKUI.NewElement("bMinimize_Frame", "button")

@@ -119,11 +119,13 @@ LvLKUI.BaseMethods = {
 		local targetRecalc = elm._parent or LvLKUI.ActiveElements
 		local hasParent = elm._parent ~= nil
 
-		elm = nil
 		if hasParent then
+			targetRecalc.children[elm.name] = nil
+			elm = nil
 			LvLKUI.RecalculateElementSortedChildren(targetRecalc)
 		else
-			LvLKUI.RecalculateSortedElementList(targetRecalc)
+			LvLKUI.ActiveElements[elm.name] = nil
+			LvLKUI.RecalculateSortedElementList()
 		end
 	end,
 }

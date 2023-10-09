@@ -45,6 +45,8 @@ local function getHoveredElement(sortedList, mx, my)
     return clickedElement, relativePos
 end
 
+local _toTriggerClick = {}
+
 local function triggerExternalClick(elmlist, mx, my, button)
     for i = 1, #elmlist do
         local elm = elmlist[i]
@@ -52,7 +54,13 @@ local function triggerExternalClick(elmlist, mx, my, button)
         local relativePos = {mx - elmPos[1], my - elmPos[2]}
 
         if elm.MOUSE_CLICK_EXTERNAL then
-            elm.onClick(elm, relativePos[1], relativePos[2], button, false)
+            if _toTriggerClick[elm] == nil then
+                _toTriggerClick[elm] = {relativePos[1], relativePos[2], false}
+            elseif _toTriggerClick[elm][3] == false then
+                _toTriggerClick[elm] = {relativePos[1], relativePos[2], false}
+            end
+
+            --elm.onClick(elm, relativePos[1], relativePos[2], button, false)
         end
 
         if elm._childCount > 0 then
@@ -63,16 +71,20 @@ end
 
 
 function LvLKUI.TriggerClick(mx, my, button)
+    _toTriggerClick = {}
+
     -- trigger always elements first
     triggerExternalClick(LvLKUI.SortedElements, mx, my)
 
     local elm, posRela = getHoveredElement(LvLKUI.SortedElements, mx, my)
 
-    if not elm then
-        return
+    if elm then
+        _toTriggerClick[elm] = {posRela[1], posRela[2], true}
     end
 
-    elm.onClick(elm, posRela[1], posRela[2], button, true)
+    for k, v in pairs(_toTriggerClick) do
+        k.onClick(k, v[1], v[2], button, v[3])
+    end
 end
 
 
@@ -120,4 +132,22 @@ end
 
 function LvLKUI.TriggerThink(dt)
     triggerThink(LvLKUI.SortedElements, dt)
+end
+
+local function triggerKeypress(elmlist, key, isKeypress)
+    for i = 1, #elmlist do
+        local elm = elmlist[i]
+
+        if elm.onKeyPress then
+            elm.onKeyPress(elm, key, isKeypress)
+        end
+
+        if elm._childCount > 0 then
+            triggerKeypress(elm._sortedChildren, key, isKeypress)
+        end
+    end
+end
+
+function LvLKUI.TriggerKeypress(key, isKeypress)
+    triggerKeypress(LvLKUI.SortedElements, key, isKeypress)
 end
