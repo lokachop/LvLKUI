@@ -1,11 +1,13 @@
 local utf8 = require("utf8")
 
 LvLKUI = LvLKUI or {}
-
 LvLKUI.GLOBAL_HAS_TEXT_ENTRY = false
+
+local cursorIBeam = love.mouse.getSystemCursor("ibeam")
 
 LvLKUI.DeclareComponent("textentry", {
 	["MOUSE_CLICK_EXTERNAL"] = true,
+	["MOUSE_HOVER_EXTERNAL"] = true,
 	["label"] = "Enter text here...",
 	["textBuffer"] = "",
 	["_textLabelObj"] = nil,
@@ -45,7 +47,6 @@ LvLKUI.DeclareComponent("textentry", {
 
 		LvLKUI.GLOBAL_HAS_TEXT_ENTRY = false
 		elm._isCaptured = false
-		print("no longer captured!")
 	end,
 
 	-- what to do when clicked?
@@ -66,12 +67,15 @@ LvLKUI.DeclareComponent("textentry", {
 
 		LvLKUI.GLOBAL_HAS_TEXT_ENTRY = true
 		elm._isCaptured = true
-
-		print("captured !")
 	end,
 
 	-- what to do when hovering?
-	["onHover"] = function(elm, mx, my)
+	["onHover"] = function(elm, mx, my, hit)
+		if hit then
+			love.mouse.setCursor(cursorIBeam)
+		else
+			love.mouse.setCursor()
+		end
 	end,
 
 	-- internal

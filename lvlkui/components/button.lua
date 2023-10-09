@@ -1,11 +1,14 @@
 LvLKUI = LvLKUI or {}
 
+local cursorClick = love.mouse.getSystemCursor("hand")
+
 LvLKUI.DeclareComponent("button", {
 	["label"] = "Button",
 	["_isHovered"] = false,
 	["MOUSE_HOVER_EXTERNAL"] = true,
 	["MOUSE_CLICK_EXTERNAL"] = false,
 	["_textLabelObj"] = nil,
+	["isDisabled"] = false,
 
 	-- what to do when we're initialized
 	["onInit"] = function(elm)
@@ -25,6 +28,12 @@ LvLKUI.DeclareComponent("button", {
 	-- what to do when hovering?
 	["onHover"] = function(elm, mx, my, hit)
 		elm._isHovered = hit
+
+		if hit then
+			love.mouse.setCursor(cursorClick)
+		else
+			love.mouse.setCursor()
+		end
 	end,
 
 	-- what to do when the label changes

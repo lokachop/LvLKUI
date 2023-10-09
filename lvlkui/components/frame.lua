@@ -1,6 +1,6 @@
 LvLKUI = LvLKUI or {}
 
-LvLKUI.GLOBAL_DRAGGING_FRAME = false
+LvLKUI.GLOBAL_DRAGGING = LvLKUI.GLOBAL_DRAGGING or false
 
 LvLKUI.DeclareComponent("frame", {
 	["MOUSE_HOVER_EXTERNAL"] = true,
@@ -18,9 +18,7 @@ LvLKUI.DeclareComponent("frame", {
 	["closeDisabled"] = false,
 
 	["SetCloseDisabled"] = function(elm, disable)
-		print(elm.closeDisabled)
 		elm.closeDisabled = disable or false
-		print(elm.closeDisabled)
 	end,
 
 	-- what to do when we're initialized
@@ -45,7 +43,6 @@ LvLKUI.DeclareComponent("frame", {
 		bClose:SetOnPaint(function(elm2, w, h, colPrimary, colSecondary, colHighlight, font)
 			local _add = 0
 			if not elm.closeDisabled then
-				--print(elm.closeDisabled)
 				local _addHover = elm2._isHovered and 0.1 or 0.0
 				local _addMouse = (elm2._isHovered and love.mouse.isDown(1)) and 0.2 or 0
 				_add = _addHover + _addMouse
@@ -141,7 +138,7 @@ LvLKUI.DeclareComponent("frame", {
 	-- what to do when hovering?
 	["onHover"] = function(elm, mx, my, hit)
 		-- wow more terrible hacks
-		if LvLKUI.GLOBAL_DRAGGING_FRAME and LvLKUI.GLOBAL_DRAGGING_FRAME ~= elm then
+		if LvLKUI.GLOBAL_DRAGGING and LvLKUI.GLOBAL_DRAGGING ~= elm then
 			return
 		end
 
@@ -164,11 +161,11 @@ LvLKUI.DeclareComponent("frame", {
 			elm._isDragging = true
 			elm._relativePickup = {mx, my}
 
-			LvLKUI.GLOBAL_DRAGGING_FRAME = elm
+			LvLKUI.GLOBAL_DRAGGING = elm
 		else
 			if not love.mouse.isDown(1) then
 				elm._isDragging = false
-				LvLKUI.GLOBAL_DRAGGING_FRAME = nil
+				LvLKUI.GLOBAL_DRAGGING = nil
 				return
 			end
 

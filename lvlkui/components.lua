@@ -73,8 +73,10 @@ function LvLKUI.DeclareComponent(name, data)
 		ptr[k] = copy(v)
 	end
 
-	print("[\"" .. name .. "\"]")
-	LvLKUI.PrintTable(ptr, "|  ")
+	--print("[\"" .. name .. "\"]")
+	--LvLKUI.PrintTable(ptr, "|  ")
+
+	print("LvLKUI: New component! \"" .. name .. "\"")
 end
 
 function LvLKUI.GetNewComponentCopy(name)
@@ -88,6 +90,7 @@ end
 LvLKUI.LoadFile("components.panel")
 LvLKUI.LoadFile("components.button")
 LvLKUI.LoadFile("components.label")
+LvLKUI.LoadFile("components.dragpanel")
 
 LvLKUI.LoadFile("components.frame")
 LvLKUI.LoadFile("components.textentry")

@@ -83,6 +83,16 @@ function love.load()
 
 
 
+	local dragpanel_base = LvLKUI.NewElement("dragpanel_base", "dragpanel")
+	dragpanel_base:SetPriority(10)
+	dragpanel_base:SetPos({400, 128})
+	dragpanel_base:SetSize({128, 128})
+	--dragpanel_base:SetOnClick(function(elm, mx, my)
+	--	print("you pressed this too!")
+	--end)
+
+	LvLKUI.PushElement(dragpanel_base)
+
 
 	--[[
 	local panel_test2 = LvLKUI.NewElement("panel_test2", "panel")
@@ -106,8 +116,8 @@ function love.update(dt)
 	LvLKUI.TriggerThink(dt)
 end
 
-function love.textinput(key)
-	LvLKUI.TriggerKeypress(key, false)
+function love.textinput(t)
+	LvLKUI.TriggerKeypress(t, false)
 end
 
 function love.keypressed(key)

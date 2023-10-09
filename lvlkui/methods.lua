@@ -116,6 +116,10 @@ LvLKUI.BaseMethods = {
 		end
 	end,
 	["Remove"] = function(elm)
+		if elm.onRemove then
+			elm.onRemove(elm)
+		end
+
 		local targetRecalc = elm._parent or LvLKUI.ActiveElements
 		local hasParent = elm._parent ~= nil
 

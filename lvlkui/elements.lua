@@ -88,7 +88,7 @@ function LvLKUI.PushElement(elm, parent)
 		parent._childCount = parent._childCount + 1
 		elm._parent = parent
 
-		print(parent.name .. ".children[" .. elm.name .. "]: {comp. \"" .. elm.component .. "\"}")
+		--print(parent.name .. ".children[" .. elm.name .. "]: {comp. \"" .. elm.component .. "\"}")
 
 		LvLKUI.RecalculateElementSortedChildren(parent)
 	else
@@ -97,7 +97,7 @@ function LvLKUI.PushElement(elm, parent)
 		end
 
 		LvLKUI.ActiveElements[elm.name] = elm
-		print("LvLKUI.ActiveElements[" .. elm.name .. "]: {comp. \"" .. elm.component .. "\"}")
+		--print("LvLKUI.ActiveElements[" .. elm.name .. "]: {comp. \"" .. elm.component .. "\"}")
 
 		LvLKUI.RecalculateSortedElementList()
 	end
@@ -109,6 +109,11 @@ function LvLKUI.RemoveElement(tag, parent)
 			return
 		end
 
+		local elm = parent.children[tag]
+		if elm.onRemove then
+			elm.onRemove(elm)
+		end
+
 		parent.children[tag] = nil
 		parent._childCount = parent._childCount - 1
 
@@ -117,6 +122,12 @@ function LvLKUI.RemoveElement(tag, parent)
 		if not LvLKUI.ActiveElements[tag] then
 			return
 		end
+
+		local elm = LvLKUI.ActiveElements[tag]
+		if elm.onRemove then
+			elm.onRemove(elm)
+		end
+
 
 		LvLKUI.ActiveElements[tag] = nil
 		LvLKUI.RecalculateSortedElementList()
