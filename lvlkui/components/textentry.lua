@@ -15,7 +15,7 @@ LvLKUI.DeclareComponent("textentry", {
 	["_dtTimer"] = 0,
 	["maxLength"] = 0,
 	["numericalOnly"] = false,
-	["allowDecimals"] = false,
+	["allowDecimals"] = true,
 
 	-- what to do when we're initialized
 	["onInit"] = function(elm)
@@ -88,6 +88,11 @@ LvLKUI.DeclareComponent("textentry", {
 			return
 		end
 
+		local isCtrl = love.keyboard.isDown("lctrl")
+		if isCtrl and key == "v" then
+			elm.textBuffer = string.sub(elm.textBuffer .. love.system.getClipboardText(), 0, elm.maxLength == 0 and 12800 or elm.maxLength)
+		end
+
 		if key == "escape" then
 			elm:EscapeInput()
 			return
@@ -120,7 +125,9 @@ LvLKUI.DeclareComponent("textentry", {
 
 			if elm.numericalOnly and tonumber(concatCalc) == nil then
 				if key == "." then
-					concatCalc = "0" .. concatCalc
+					concatCalc = elm.textBuffer .. ("0" .. key)
+				elseif key == "-" and (#concatCalc <= 1) then
+					concatCalc = concatCalc -- so linter doesnt hate me
 				else
 					return
 				end
@@ -138,6 +145,7 @@ LvLKUI.DeclareComponent("textentry", {
 
 		elm._textLabelObj:set(setMsg)
 
+		elm._dtTimer = .5
 		elm.onTextChange(elm, elm.textBuffer)
 	end,
 
@@ -171,6 +179,7 @@ LvLKUI.DeclareComponent("textentry", {
 		end
 
 		elm.textBuffer = text
+		elm._textLabelObj:set(elm.textBuffer)
 	end,
 
 	["GetText"] = function(elm, text)

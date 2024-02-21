@@ -97,3 +97,5 @@ LvLKUI.LoadFile("components.textentry")
 
 LvLKUI.LoadFile("components.testpanel")
 LvLKUI.LoadFile("components.mousetest")
+
+LvLKUI.LoadFile("components.checkbox")
